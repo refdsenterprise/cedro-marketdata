@@ -2,16 +2,22 @@ import XCTest
 import CedroStreamingWebSocket
 
 final class CedroStreamingWebSocketTests: XCTestCase {
-    let expectation = XCTestExpectation()
-    func test() throws {
-        let login = makeLogin(delegate: self)
+    let loginExpectation = XCTestExpectation()
+    
+    lazy var login: Login = {
+        return makeLogin(delegate: self)
+    }()
+    
+    func testLogin() throws {
         login.login(withCredentials: AddLoginModel(module: .login, service: .authentication, parameters: AddLoginParametersModel(login: "fasttrade", password: "102030")))
-        wait(for: [expectation], timeout: 5000)
+        wait(for: [loginExpectation], timeout: 10)
     }
 }
 
 extension CedroStreamingWebSocketTests: LoginDelegate {
     func login(didReceived loginModel: LoginModel) {
-        print(loginModel)
+        XCTAssert(loginModel.success)
+        XCTAssert(loginModel.token.isEmpty == false)
+        loginExpectation.fulfill()
     }
 }
