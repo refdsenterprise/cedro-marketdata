@@ -10,17 +10,17 @@ public extension LoginDelegate {
 }
 
 public final class Login {
-    private let addLogin: AddLogin
+    private let useCase: AddLogin
     private let delegate: LoginDelegate
     public private(set) var loginResponse: LoginModel?
     
-    init(addLogin: AddLogin, delegate: LoginDelegate) {
-        self.addLogin = addLogin
+    init(useCase: AddLogin, delegate: LoginDelegate) {
+        self.useCase = useCase
         self.delegate = delegate
     }
     
-    public func login(withCredentials credentials: AddLoginModel) {
-        addLogin.add(addLoginModel: credentials) { [weak self] result in
+    public func login(withRequestModel credentials: AddLoginModel) {
+        useCase.add(addLoginModel: credentials) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let model):

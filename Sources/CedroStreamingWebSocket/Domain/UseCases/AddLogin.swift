@@ -6,11 +6,11 @@ protocol AddLogin {
 }
 
 public struct AddLoginModel: CedroStreamingWebSocketModel {
-    public var module: Module
-    public var service: Service
+    public var module: Module = .login
+    public var service: Service = .authentication
     public var parameters: AddLoginParametersModel
     
-    public init(module: Module, service: Service, parameters: AddLoginParametersModel) {
+    public init(module: Module = .login, service: Service = .authentication, parameters: AddLoginParametersModel) {
         self.module = module
         self.service = service
         self.parameters = parameters
