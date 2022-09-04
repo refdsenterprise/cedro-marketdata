@@ -8,10 +8,6 @@ final class CedroStreamingWebSocketTests: XCTestCase {
         return makeLogin(delegate: self)
     }()
     
-    lazy var aggregatedBook: AggregatedBook = {
-        return makeAggregatedBook(token: "507e2861-9b75-417d-9851-8871c8a15aa8", delegate: self)
-    }()
-    
     func testLogin() throws {
         login.login(
             withRequestModel: AddLoginModel(
@@ -24,10 +20,11 @@ final class CedroStreamingWebSocketTests: XCTestCase {
         wait(for: [expectations[0]], timeout: 10)
     }
     
-    func testAggregatedBook() {
+    func testAggregatedBook(token: String) {
+        let aggregatedBook = makeAggregatedBook(token: token, delegate: self)
         aggregatedBook.aggregatedBook(
             withRequestModel: GetAggregatedBookModel(
-                token: "507e2861-9b75-417d-9851-8871c8a15aa8",
+                token: token,
                 parameterGet: "petr4",
                 parameters: GetAggregatedBookParameters(subsbribetype: .start)
             )
@@ -41,6 +38,7 @@ extension CedroStreamingWebSocketTests: LoginDelegate {
         XCTAssert(loginModel.success)
         XCTAssertFalse(loginModel.token.isEmpty)
         expectations[0].fulfill()
+        DispatchQueue.global(qos: .background).async { self.testAggregatedBook(token: loginModel.token) }
     }
 }
 
