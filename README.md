@@ -1,6 +1,9 @@
 # Cedro Websocket
 
-WebSocket é uma API que estabelece conexões bilaterais de soquete entre um navegador e um servidor, permitindo assim a troca de dados com base em TCP. Ele fornece sinal de Market Data em que o recurso de cotação é entregue em streaming e em XML/JSON, disponível para os mercados B3 e Moedas.
+> WebSocket é uma API que estabelece conexões bilaterais de soquete entre um navegador e um servidor, permitindo assim a troca de dados com base em TCP. Ele fornece sinal de Market Data em que o recurso de cotação é entregue em streaming e em XML/JSON, disponível para os mercados B3 e Moedas.
+
+[![Swift Version][swift-image]][swift-url]
+[![License][license-image]][license-url]
 
 ### O que é API WebSocket?
 
@@ -11,11 +14,61 @@ Os serviços baseados na API WebSocket dão autorização para que as aplicaçõ
 * Sinal Real-Time ou Delay;
 * Cotações Bovespa, BM&F, Moedas e Indicadores.
 
-### O que posso e não posso fazer
+### Funcionalidades
 
-* O funcionamento é por assinatura, ou seja, o usuário assina o comando uma única vez, e o servidor envia as atualizações;
-* O usuário não pode simular REQUEST/RESPONSE;
-* O usuário não pode redistribuir (FEED HANDLER);
-* Modelo redistributor limitado a 50 assinaturas por conexão;
-* Cliente pode ter acesso ao Tick-By-Tick;
-* Não tem Histórico de Trades.
+- [X] Login WebSocket
+- [X] Livro de Ofertas Agregado - `Aggregated Book`
+- [ ] Livro de Ofertas Detalhado - `Book`
+- [ ] Cotação - `Quote`
+- [ ] Negócios Realizados - `Quote Trade`
+- [ ] Dados para `Candle Chart`
+
+### Instalação
+
+Adicione esse projeto em seu arquivo `Package.swift`.
+
+```swift
+import PackageDescription
+
+let package = Package(
+    dependencies: [
+        .package(url: "https://github.com/rafaelesantos/cedro-streaming-websocket.git", branch: "main")
+    ],
+    targets: [
+        .target(
+            name: "YourProject",
+            dependencies: ["CedroStreamingWebSocket"]),
+    ]
+)
+```
+
+### Como Utilizar
+
+Para fazer uso da biblioteca é necessário importar o pacote `CedroStreamingWebSocket`. Em seguida é necessário implementar o protocolo `...Delegate` do serviço que for consumir. Por fim, instancie o serviço e realize a chamada.
+
+```swift
+import CedroStreamingWebSocket
+
+class ViewController: AggregatedBookDelegate {
+    func configureAggregatedBook() {
+        let aggregatedBook = makeAggregatedBook(token: "token", delegate: self)
+        aggregatedBook.aggregatedBook(
+            withRequestModel: GetAggregatedBookModel(
+                token: "token",
+                parameterGet: "petr4",
+                parameters: GetAggregatedBookParameters(subsbribetype: .start)
+            )
+        )
+    }
+    
+    // MARK: - AggregatedBookDelegate
+    func aggregatedBook(didReceived aggregatedBookModel: AggregatedBookModel) {
+        print(aggregatedBookModel)
+    }
+}
+```
+
+[swift-image]:https://img.shields.io/badge/swift-5.6-orange.svg
+[swift-url]: https://swift.org/
+[license-image]: https://img.shields.io/badge/License-MIT-blue.svg
+[license-url]: LICENSE
