@@ -5,6 +5,7 @@
 [![CI](https://github.com/rafaelesantos/cedro-streaming-websocket/actions/workflows/swift.yml/badge.svg)](https://github.com/rafaelesantos/cedro-streaming-websocket/actions/workflows/swift.yml)
 [![Swift Version][swift-image]][swift-url]
 [![License][license-image]][license-url]
+[![Cedro WebSocket][cedro-image]][cedro-url]
 
 ### O que é API WebSocket?
 
@@ -73,3 +74,5 @@ class ViewController: AggregatedBookDelegate {
 [swift-url]: https://www.swift.org/blog/swift-5.6-released/
 [license-image]: https://img.shields.io/badge/License-MIT-blue.svg
 [license-url]: LICENSE
+[cedro-image]: https://img.shields.io/badge/WebSocket-Cedro-green.svg
+[cedro-url]: https://www.marketdatacloud.com.br/APIs/websocket/
