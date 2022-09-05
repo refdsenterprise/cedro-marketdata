@@ -69,7 +69,7 @@ class ViewController: AggregatedBookDelegate {
 }
 ```
 
-[swift-image]:https://img.shields.io/badge/swift-5.6-orange.svg
-[swift-url]: https://swift.org/
+[swift-image]: https://img.shields.io/badge/swift-5.6-orange.svg
+[swift-url]: https://www.swift.org/blog/swift-5.6-released/
 [license-image]: https://img.shields.io/badge/License-MIT-blue.svg
 [license-url]: LICENSE
