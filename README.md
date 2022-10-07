@@ -63,8 +63,8 @@ class SomeViewController {
 }
 ```
 
-[swift-image]: https://img.shields.io/badge/swift-5.6-orange.svg
-[swift-url]: https://www.swift.org/blog/swift-5.6-released/
+[swift-image]: https://img.shields.io/badge/swift-5.7-orange.svg
+[swift-url]: https://www.swift.org/blog/swift-5.7-released/
 [license-image]: https://img.shields.io/badge/License-MIT-blue.svg
 [license-url]: LICENSE
 [cedro-image]: https://img.shields.io/badge/WebSocket-Cedro-green.svg
