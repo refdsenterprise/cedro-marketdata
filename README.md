@@ -19,9 +19,9 @@ Os serviços baseados na API WebSocket dão autorização para que as aplicaçõ
 ### Funcionalidades
 
 - [X] Livro de Ofertas Agregado - `Aggregated Book`
-- [X] Livro de Ofertas Detalhado - `Book`
+- [X] Livro de Ofertas Detalhado - `Detailed Book`
 - [ ] Cotação - `Quote`
-- [ ] Negócios Realizados - `Quote Trade`
+- [X] Negócios Realizados - `Business Book`
 - [ ] Gráfico de Candles - `Candle Chart`
 
 ### Instalação
@@ -54,13 +54,17 @@ class SomeViewController {
     func someFunction() {
         CedroWebSocket.shared.start(username: "any-username", password: "any-password")
     
-        CedroWebSocket.shared.aggregatedBook("petr4") { aggregatedBook in
-            aggregatedBook.logger(additionalMessage: nil).console()
-        }
+    CedroWebSocket.shared.aggregatedBook("petr4") { aggregatedBook in
+        aggregatedBook.logger(additionalMessage: nil).console()
+    }
     
-        CedroWebSocket.shared.detailedBook("vale3") { detailedBook in
-            detailedBook.logger(additionalMessage: nil).console()
-        }
+    CedroWebSocket.shared.detailedBook("vale3") { detailedBook in
+        detailedBook.logger(additionalMessage: nil).console()
+    }
+    
+    CedroWebSocket.shared.businessBook("petr4") { businessBook in
+        businessBook.logger(additionalMessage: nil).console()
+    }
     }
 }
 ```
