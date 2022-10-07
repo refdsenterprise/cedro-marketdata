@@ -42,3 +42,14 @@ extension WeakProxy: BusinessBookPresenterDelegate where T: BusinessBookPresente
         instance?.businessBook(didReceive: businessBookModel)
     }
 }
+
+// MARK: - VolumeAtPricePresenterDelegate
+extension WeakProxy: VolumeAtPricePresenterDelegate where T: VolumeAtPricePresenterDelegate {
+    func volumeAtPrice(didReceive error: CedroError) {
+        instance?.volumeAtPrice(didReceive: error)
+    }
+    
+    func volumeAtPrice(didReceive volumeAtPriceModel: VolumeAtPriceModel) {
+        instance?.volumeAtPrice(didReceive: volumeAtPriceModel)
+    }
+}

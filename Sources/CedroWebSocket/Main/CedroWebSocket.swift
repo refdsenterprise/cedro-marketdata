@@ -62,4 +62,18 @@ public final class CedroWebSocket {
         }
         semaphore.signal()
     }
+    
+    public func volumeAtPrice(_ symbol: String, response: @escaping (VolumeAtPriceModel) -> Void) {
+        semaphore.wait()
+        var controller: VolumeAtPriceController? = makeVolumeAtPriceController()
+        controller?.subscribe(symbol) { [weak self] result in
+            switch result {
+            case.success(let volumeAtPriceModel): response(volumeAtPriceModel)
+            case .failure(_):
+                controller = nil
+                self?.volumeAtPrice(symbol, response: response)
+            }
+        }
+        semaphore.signal()
+    }
 }

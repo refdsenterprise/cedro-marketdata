@@ -40,3 +40,12 @@ extension DispatchMainQueueDecorator: GetBusinessBook where T: GetBusinessBook {
         }
     }
 }
+
+// MARK: - GetVolumeAtPrice
+extension DispatchMainQueueDecorator: GetVolumeAtPrice where T: GetVolumeAtPrice {
+    public func get(withBody body: GetVolumeAtPriceModel, completion: @escaping (GetVolumeAtPrice.Result) -> Void) {
+        instance.get(withBody: body) { [weak self] result in
+            self?.dispatch { completion(result) }
+        }
+    }
+}

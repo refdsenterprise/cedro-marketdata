@@ -8,12 +8,16 @@ func main() {
         aggregatedBook.logger(additionalMessage: nil).console()
     }
     
-    CedroWebSocket.shared.detailedBook("vale3") { detailedBook in
+    CedroWebSocket.shared.detailedBook("petr4") { detailedBook in
         detailedBook.logger(additionalMessage: nil).console()
     }
     
     CedroWebSocket.shared.businessBook("petr4") { businessBook in
         businessBook.logger(additionalMessage: nil).console()
+    }
+    
+    CedroWebSocket.shared.volumeAtPrice("petr4") { volumeAtPrice in
+        volumeAtPrice.logger(additionalMessage: nil).console()
     }
 }
 
