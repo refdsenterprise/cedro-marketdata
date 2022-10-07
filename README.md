@@ -18,9 +18,8 @@ Os serviços baseados na API WebSocket dão autorização para que as aplicaçõ
 
 ### Funcionalidades
 
-- [X] Login WebSocket
 - [X] Livro de Ofertas Agregado - `Aggregated Book`
-- [ ] Livro de Ofertas Detalhado - `Book`
+- [X] Livro de Ofertas Detalhado - `Book`
 - [ ] Cotação - `Quote`
 - [ ] Negócios Realizados - `Quote Trade`
 - [ ] Dados para `Candle Chart`
@@ -34,38 +33,32 @@ import PackageDescription
 
 let package = Package(
     dependencies: [
-        .package(url: "https://github.com/rafaelesantos/cedro-streaming-websocket.git", branch: "main")
+        .package(url: "https://github.com/rafaelesantos/cedro-websocket.git", branch: "main")
     ],
     targets: [
         .target(
             name: "YourProject",
-            dependencies: ["CedroStreamingWebSocket"]),
+            dependencies: ["CedroWebSocket"]),
     ]
 )
 ```
 
 ### Como Utilizar
 
-Para fazer uso da biblioteca é necessário importar o pacote `CedroStreamingWebSocket`. Em seguida é necessário implementar o protocolo `...Delegate` do serviço que for consumir. Por fim, instancie o serviço e realize a chamada.
+Para fazer uso da biblioteca é necessário importar o pacote `CedroWebSocket`. Em seguida, acesse o singleton do package e faça a chamada da funcionalidade que deseja.
 
 ```swift
 import CedroStreamingWebSocket
 
-class ViewController: AggregatedBookDelegate {
-    func configureAggregatedBook() {
-        let aggregatedBook = makeAggregatedBook(token: "token", delegate: self)
-        aggregatedBook.aggregatedBook(
-            withRequestModel: GetAggregatedBookModel(
-                token: "token",
-                parameterGet: "petr4",
-                parameters: GetAggregatedBookParameters(subsbribetype: .start)
-            )
-        )
-    }
+class SomeViewController {
+    func someFunction() {
+        CedroWebSocket.shared.aggregatedBook("petr4") { aggregatedBook in
+            aggregatedBook.logger(additionalMessage: nil).console()
+        }
     
-    // MARK: - AggregatedBookDelegate
-    func aggregatedBook(didReceived aggregatedBookModel: AggregatedBookModel) {
-        print(aggregatedBookModel)
+        CedroWebSocket.shared.detailedBook("vale3") { detailedBook in
+            detailedBook.logger(additionalMessage: nil).console()
+        }
     }
 }
 ```
