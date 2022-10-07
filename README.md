@@ -22,7 +22,7 @@ Os serviços baseados na API WebSocket dão autorização para que as aplicaçõ
 - [X] Livro de Ofertas Detalhado - `Book`
 - [ ] Cotação - `Quote`
 - [ ] Negócios Realizados - `Quote Trade`
-- [ ] Dados para `Candle Chart`
+- [ ] Gráfico de Candles - `Candle Chart`
 
 ### Instalação
 
