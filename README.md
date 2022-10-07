@@ -48,7 +48,7 @@ let package = Package(
 Para fazer uso da biblioteca é necessário importar o pacote `CedroWebSocket`. Em seguida, acesse o singleton do package e faça a chamada da funcionalidade que deseja.
 
 ```swift
-import CedroStreamingWebSocket
+import CedroWebSocket
 
 class SomeViewController {
     func someFunction() {
