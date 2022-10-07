@@ -1,6 +1,6 @@
 import Foundation
-import RefdsInfra
+import CedroWebSocketInfra
 
-func makeNetworkAdapter() -> WebSocketNetworkAdapter {
-    return WebSocketNetworkAdapter()
+func makeWebSocketNetworkAdapter() -> CedroWebSocketNetworkAdapter {
+    return CedroWebSocketNetworkAdapter()
 }

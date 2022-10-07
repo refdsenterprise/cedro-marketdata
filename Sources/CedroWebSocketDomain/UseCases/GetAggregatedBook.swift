@@ -1,12 +1,11 @@
 import Foundation
-import RefdsDomain
 
 public protocol GetAggregatedBook {
-    typealias Result = Swift.Result<AggregatedBookModel, DomainError>
-    func get(getAggregatedBookModel: GetAggregatedBookModel, completion: @escaping (Result) -> Void)
+    typealias Result = Swift.Result<AggregatedBookModel, CedroError>
+    func get(withBody body: GetAggregatedBookModel, completion: @escaping (Result) -> Void)
 }
 
-public struct GetAggregatedBookModel: DomainModel {
+public struct GetAggregatedBookModel: CedroModel {
     public var token: String
     public var module: Module = .quotes
     public var service: Service = .aggregatedBook
@@ -20,12 +19,12 @@ public struct GetAggregatedBookModel: DomainModel {
     }
 }
 
-public struct GetAggregatedBookParameters: DomainModel {
+public struct GetAggregatedBookParameters: CedroModel {
     public var subsbribetype: SubscribeType
     public var delay: String = ""
     
-    public init(subsbribetype: SubscribeType, delay: String = "") {
+    public init(subsbribetype: SubscribeType, delay: Int? = nil) {
         self.subsbribetype = subsbribetype
-        self.delay = delay
+        if let delay = delay { self.delay = "\(delay)" }
     }
 }

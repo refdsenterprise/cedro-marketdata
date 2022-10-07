@@ -1,13 +1,12 @@
 import Foundation
-import RefdsDomain
 
-public struct AggregatedBookModel: DomainModel {
+public struct AggregatedBookModel: CedroModel {
     public let book: AggregatedBookContentModel
     public let type: ContentType
     public let parameter: String
 }
 
-public struct AggregatedBookContentModel: DomainModel {
+public struct AggregatedBookContentModel: CedroModel {
     public let symbol: String
     public let sell: [AggregatedBookOfferModel]
     public let buy: [AggregatedBookOfferModel]
@@ -19,7 +18,7 @@ public struct AggregatedBookContentModel: DomainModel {
     }
 }
 
-public struct AggregatedBookOfferModel: DomainModel {
+public struct AggregatedBookOfferModel: CedroModel {
     public var amount: Double
     public var price: Double
     public var formattedAmount: String

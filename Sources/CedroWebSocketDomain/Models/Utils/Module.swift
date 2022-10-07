@@ -1,7 +1,6 @@
 import Foundation
-import RefdsDomain
 
-public enum Module: String, DomainModel {
+public enum Module: String, CedroModel {
     case login = "login"
     case quotes = "quotes"
 }

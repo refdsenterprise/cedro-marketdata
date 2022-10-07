@@ -1,7 +1,7 @@
 import Foundation
-import RefdsDomain
 
-public enum Service: String, DomainModel {
+public enum Service: String, CedroModel {
     case authentication = "authentication"
     case aggregatedBook = "aggregatedBook"
+    case detailedBook = "miniBook"
 }

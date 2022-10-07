@@ -1,12 +1,21 @@
 {
   "pins" : [
     {
+      "identity" : "cedro-authentication",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/rafaelesantos/cedro-authentication.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "c708476369d7aefd933bcd0bcfd5896b28de4f0a"
+      }
+    },
+    {
       "identity" : "refds-core",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/rafaelesantos/refds-core.git",
       "state" : {
         "branch" : "main",
-        "revision" : "84644c33891585459f8ac052f8b59cae52f88704"
+        "revision" : "5ef7fac6772964b1c0d3d285fc2586e8995dacb9"
       }
     }
   ],

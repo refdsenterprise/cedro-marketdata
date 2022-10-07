@@ -14,17 +14,19 @@ public final class DispatchMainQueueDecorator<T> {
     }
 }
 
-extension DispatchMainQueueDecorator: AddLogin where T: AddLogin {
-    public func add(addLoginModel: AddLoginModel, completion: @escaping (AddLogin.Result) -> Void) {
-        instance.add(addLoginModel: addLoginModel) { [weak self] result in
+// MARK: - GetAggregatedBook
+extension DispatchMainQueueDecorator: GetAggregatedBook where T: GetAggregatedBook {
+    public func get(withBody body: GetAggregatedBookModel, completion: @escaping (GetAggregatedBook.Result) -> Void) {
+        instance.get(withBody: body) { [weak self] result in
             self?.dispatch { completion(result) }
         }
     }
 }
 
-extension DispatchMainQueueDecorator: GetAggregatedBook where T: GetAggregatedBook {
-    public func get(getAggregatedBookModel: GetAggregatedBookModel, completion: @escaping (GetAggregatedBook.Result) -> Void) {
-        instance.get(getAggregatedBookModel: getAggregatedBookModel) { [weak self] result in
+// MARK: - GetDetailedBook
+extension DispatchMainQueueDecorator: GetDetailedBook where T: GetDetailedBook {
+    public func get(withBody body: GetDetailedBookModel, completion: @escaping (GetDetailedBook.Result) -> Void) {
+        instance.get(withBody: body) { [weak self] result in
             self?.dispatch { completion(result) }
         }
     }

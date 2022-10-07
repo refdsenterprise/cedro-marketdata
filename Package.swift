@@ -8,15 +8,17 @@ let package = Package(
     platforms: [
         .iOS(.v14),
         .macOS(.v12),
-        .macCatalyst(.v15)
+        .macCatalyst(.v15),
+        .tvOS(.v14)
     ],
     products: [
         .library(
             name: "CedroWebSocket",
-            targets: ["CedroWebSocket", "CedroWebSocketDomain", "CedroWebSocketData", "CedroWebSocketPresentation"]),
+            targets: ["CedroWebSocket"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/rafaelesantos/refds-core.git", branch: "main")
+        .package(url: "https://github.com/rafaelesantos/refds-core.git", branch: "main"),
+        .package(url: "https://github.com/rafaelesantos/cedro-authentication.git", branch: "main")
     ],
     targets: [
         .target(
@@ -24,8 +26,9 @@ let package = Package(
             dependencies: [
                 "CedroWebSocketDomain",
                 "CedroWebSocketData",
+                "CedroWebSocketInfra",
                 "CedroWebSocketPresentation",
-                .product(name: "RefdsCore", package: "refds-core")
+                .product(name: "CedroAuthentication", package: "cedro-authentication")
             ]),
         .target(
             name: "CedroWebSocketDomain",
@@ -37,6 +40,9 @@ let package = Package(
                 .product(name: "RefdsCore", package: "refds-core")
             ]),
         .target(
+            name: "CedroWebSocketInfra",
+            dependencies: [.product(name: "RefdsCore", package: "refds-core")]),
+        .target(
             name: "CedroWebSocketPresentation",
             dependencies: [
                 "CedroWebSocketDomain",
@@ -46,19 +52,8 @@ let package = Package(
             name: "CedroWebSocketExample",
             dependencies: [
                 "CedroWebSocket",
-                "CedroWebSocketDomain",
-                "CedroWebSocketData",
-                "CedroWebSocketPresentation",
-                .product(name: "RefdsCore", package: "refds-core")
-            ]),
-        .testTarget(
-            name: "CedroWebSocketTests",
-            dependencies: [
-                "CedroWebSocket",
-                "CedroWebSocketDomain",
-                "CedroWebSocketData",
-                "CedroWebSocketPresentation",
-                .product(name: "RefdsCore", package: "refds-core")
-            ]),
+                .product(name: "RefdsCore", package: "refds-core"),
+                .product(name: "CedroAuthentication", package: "cedro-authentication")
+            ])
     ]
 )

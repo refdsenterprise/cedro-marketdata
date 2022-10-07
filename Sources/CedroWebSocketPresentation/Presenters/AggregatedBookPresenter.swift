@@ -1,28 +1,23 @@
 import Foundation
 import CedroWebSocketDomain
-import RefdsDomain
 
-public protocol AggregatedBookDelegate {
+public protocol AggregatedBookPresenterDelegate {
     func aggregatedBook(didReceive aggregatedBookModel: AggregatedBookModel)
-    func aggregatedBook(didReceive error: DomainError)
+    func aggregatedBook(didReceive error: CedroError)
 }
 
-public extension AggregatedBookDelegate {
-    func aggregatedBook(didReceive error: DomainError) {}
-}
-
-public final class AggregatedBook {
+public final class AggregatedBookPresenter {
     private let useCase: GetAggregatedBook
-    private let delegate: AggregatedBookDelegate
+    private let delegate: AggregatedBookPresenterDelegate
     public private(set) var aggregatedBookResponse: AggregatedBookModel?
     
-    public init(useCase: GetAggregatedBook, delegate: AggregatedBookDelegate) {
+    public init(useCase: GetAggregatedBook, delegate: AggregatedBookPresenterDelegate) {
         self.useCase = useCase
         self.delegate = delegate
     }
     
-    public func aggregatedBook(withRequestModel getAggregatedBookModel: GetAggregatedBookModel) {
-        useCase.get(getAggregatedBookModel: getAggregatedBookModel) { [weak self] result in
+    public func aggregatedBook(withBody body: GetAggregatedBookModel) {
+        useCase.get(withBody: body) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let model):

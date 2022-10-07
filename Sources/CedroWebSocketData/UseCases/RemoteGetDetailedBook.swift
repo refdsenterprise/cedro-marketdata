@@ -1,8 +1,8 @@
 import Foundation
 import CedroWebSocketDomain
 
-public final class RemoteGetAggregatedBook: GetAggregatedBook, CedroWebSocketRequest {
-    public typealias Response = AggregatedBookModel
+public final class RemoteGetDetailedBook: GetDetailedBook, CedroWebSocketRequest {
+    public typealias Response = DetailedBookModel
     public var webSocketClient: CedroWebSocketClient
     public var webSocketEndpoint: CedroWebSocketEndpoint
     private var webSocketStatus: CedroWebSocketStatus = .close
@@ -12,7 +12,7 @@ public final class RemoteGetAggregatedBook: GetAggregatedBook, CedroWebSocketReq
         self.webSocketClient = webSocketClient
     }
     
-    public func get(withBody body: GetAggregatedBookModel, completion: @escaping (GetAggregatedBook.Result) -> Void) {
+    public func get(withBody body: GetDetailedBookModel, completion: @escaping (GetDetailedBook.Result) -> Void) {
         webSocketClient.status = { [weak self] status in
             self?.webSocketStatus = status
         }

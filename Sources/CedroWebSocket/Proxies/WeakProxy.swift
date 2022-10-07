@@ -2,22 +2,32 @@ import Foundation
 import CedroWebSocketDomain
 import CedroWebSocketPresentation
 
-public class WeakProxy<T: AnyObject> {
+class WeakProxy<T: AnyObject> {
     private weak var instance: T?
     
-    public init(_ instance: T) {
+    init(_ instance: T) {
         self.instance = instance
     }
 }
 
-extension WeakProxy: LoginDelegate where T: LoginDelegate {
-    public func login(didReceive loginModel: LoginModel) {
-        instance?.login(didReceive: loginModel)
+// MARK: - AggregatedBookPresenterDelegate
+extension WeakProxy: AggregatedBookPresenterDelegate where T: AggregatedBookPresenterDelegate {
+    func aggregatedBook(didReceive error: CedroError) {
+        instance?.aggregatedBook(didReceive: error)
+    }
+    
+    func aggregatedBook(didReceive aggregatedBookModel: AggregatedBookModel) {
+        instance?.aggregatedBook(didReceive: aggregatedBookModel)
     }
 }
 
-extension WeakProxy: AggregatedBookDelegate where T: AggregatedBookDelegate {
-    public func aggregatedBook(didReceive aggregatedBookModel: CedroWebSocketDomain.AggregatedBookModel) {
-        instance?.aggregatedBook(didReceive: aggregatedBookModel)
+// MARK: - AggregatedBookPresenterDelegate
+extension WeakProxy: DetailedBookPresenterDelegate where T: DetailedBookPresenterDelegate {
+    func detailedBook(didReceive error: CedroError) {
+        instance?.detailedBook(didReceive: error)
+    }
+    
+    func detailedBook(didReceive detailedBookModel: DetailedBookModel) {
+        instance?.detailedBook(didReceive: detailedBookModel)
     }
 }
