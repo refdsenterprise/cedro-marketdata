@@ -11,6 +11,10 @@ func main() {
     CedroWebSocket.shared.detailedBook("vale3") { detailedBook in
         detailedBook.logger(additionalMessage: nil).console()
     }
+    
+    CedroWebSocket.shared.businessBook("petr4") { businessBook in
+        businessBook.logger(additionalMessage: nil).console()
+    }
 }
 
 main()

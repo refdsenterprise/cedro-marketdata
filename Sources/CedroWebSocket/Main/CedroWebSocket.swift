@@ -48,4 +48,18 @@ public final class CedroWebSocket {
         }
         semaphore.signal()
     }
+    
+    public func businessBook(_ symbol: String, response: @escaping (BusinessBookModel) -> Void) {
+        semaphore.wait()
+        var controller: BusinessBookController? = makeBusinessBookController()
+        controller?.subscribe(symbol) { [weak self] result in
+            switch result {
+            case.success(let businessBookModel): response(businessBookModel)
+            case .failure(_):
+                controller = nil
+                self?.businessBook(symbol, response: response)
+            }
+        }
+        semaphore.signal()
+    }
 }

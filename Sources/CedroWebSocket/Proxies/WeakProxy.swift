@@ -21,7 +21,7 @@ extension WeakProxy: AggregatedBookPresenterDelegate where T: AggregatedBookPres
     }
 }
 
-// MARK: - AggregatedBookPresenterDelegate
+// MARK: - DetailedBookPresenterDelegate
 extension WeakProxy: DetailedBookPresenterDelegate where T: DetailedBookPresenterDelegate {
     func detailedBook(didReceive error: CedroError) {
         instance?.detailedBook(didReceive: error)
@@ -29,5 +29,16 @@ extension WeakProxy: DetailedBookPresenterDelegate where T: DetailedBookPresente
     
     func detailedBook(didReceive detailedBookModel: DetailedBookModel) {
         instance?.detailedBook(didReceive: detailedBookModel)
+    }
+}
+
+// MARK: - BusinessBookPresenterDelegate
+extension WeakProxy: BusinessBookPresenterDelegate where T: BusinessBookPresenterDelegate {
+    func businessBook(didReceive error: CedroError) {
+        instance?.businessBook(didReceive: error)
+    }
+    
+    func businessBook(didReceive businessBookModel: BusinessBookModel) {
+        instance?.businessBook(didReceive: businessBookModel)
     }
 }

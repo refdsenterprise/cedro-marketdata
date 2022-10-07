@@ -31,3 +31,12 @@ extension DispatchMainQueueDecorator: GetDetailedBook where T: GetDetailedBook {
         }
     }
 }
+
+// MARK: - GetBusinessBook
+extension DispatchMainQueueDecorator: GetBusinessBook where T: GetBusinessBook {
+    public func get(withBody body: GetBusinessBookModel, completion: @escaping (GetBusinessBook.Result) -> Void) {
+        instance.get(withBody: body) { [weak self] result in
+            self?.dispatch { completion(result) }
+        }
+    }
+}

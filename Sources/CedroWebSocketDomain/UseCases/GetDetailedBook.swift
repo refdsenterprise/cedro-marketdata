@@ -24,9 +24,9 @@ public struct GetDetailedBookParameters: CedroModel {
     public var filter: String
     public var delay: String = ""
     
-    public init(subsbribetype: SubscribeType, filter: Int = 15, delay: Int? = nil) {
+    public init(subsbribetype: SubscribeType, amount: Int = 100, delay: Int? = nil) {
         self.subsbribetype = subsbribetype
-        self.filter = "\(filter)"
+        self.filter = "\(amount)"
         if let delay = delay { self.delay = "\(delay)" }
     }
 }
