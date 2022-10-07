@@ -6,16 +6,19 @@ public final class CedroWebSocket {
     public static let shared = CedroWebSocket()
     private let semaphore = DispatchSemaphore(value: 1)
     private let cedroAuthentication = CedroAuthentication.shared
+    private var isCalledAuthentication = false
     
-    public init() { semaphore.wait() }
+    init() { semaphore.wait() }
     
     public func start(username: String, password: String) {
+        guard !isCalledAuthentication else { return }
         cedroAuthentication.start(username: username, password: password) { [weak self] status in
             switch status {
             case .logged: self?.semaphore.signal()
             case .unlogged: break
             }
         }
+        isCalledAuthentication = true
     }
     
     public func aggregatedBook(_ symbol: String, response: @escaping (AggregatedBookModel) -> Void) {
