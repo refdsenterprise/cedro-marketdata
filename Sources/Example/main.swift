@@ -2,6 +2,8 @@ import Foundation
 import CedroWebSocket
 
 func main() {
+    CedroWebSocket.shared.start(username: "any-username", password: "any-password")
+    
     CedroWebSocket.shared.aggregatedBook("petr4") { aggregatedBook in
         aggregatedBook.logger(additionalMessage: nil).console()
     }

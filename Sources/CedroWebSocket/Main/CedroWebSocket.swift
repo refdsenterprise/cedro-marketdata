@@ -7,9 +7,10 @@ public final class CedroWebSocket {
     private let semaphore = DispatchSemaphore(value: 1)
     private let cedroAuthentication = CedroAuthentication.shared
     
-    public init() {
-        semaphore.wait()
-        cedroAuthentication.start(username: "fasttrade", password: "102030") { [weak self] status in
+    public init() { semaphore.wait() }
+    
+    public func start(username: String, password: String) {
+        cedroAuthentication.start(username: username, password: password) { [weak self] status in
             switch status {
             case .logged: self?.semaphore.signal()
             case .unlogged: break
