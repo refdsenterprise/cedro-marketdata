@@ -27,27 +27,30 @@ public final class CedroWebSocket {
     }
     
     public func subscribe(on service: CedroWebSocketService.Subscribe) {
+        semaphore.wait()
         switch service {
         case .aggregatedBook(let symbol, let response): aggregatedBook(symbol, response: response)
         case .detailedBook(let symbol, let response): detailedBook(symbol, response: response)
         case .businessBook(let symbol, let response): businessBook(symbol, response: response)
         case .volumeAtPrice(let symbol, let response): volumeAtPrice(symbol, response: response)
         }
+        semaphore.signal()
     }
     
     public func unsubscribe(on service: CedroWebSocketService.Unsubscribe) {
+        semaphore.wait()
         switch service {
         case .aggregatedBook(let symbol): aggregatedBookControllers.removeValue(forKey: symbol.lowercased())
         case .detailedBook(let symbol): detailedBookControllers.removeValue(forKey: symbol.lowercased())
         case .businessBook(let symbol): businessBookControllers.removeValue(forKey: symbol.lowercased())
         case .volumeAtPrice(let symbol): volumeAtPriceControllers.removeValue(forKey: symbol.lowercased())
         }
+        semaphore.signal()
     }
 }
 
 extension CedroWebSocket {
     func aggregatedBook(_ symbol: String, response: @escaping (AggregatedBookModel) -> Void) {
-        semaphore.wait()
         aggregatedBookControllers[symbol.lowercased()] = makeAggregatedBookController()
         aggregatedBookControllers[symbol.lowercased()]?.subscribe(symbol) { [weak self] result in
             switch result {
@@ -57,11 +60,9 @@ extension CedroWebSocket {
                 self?.aggregatedBook(symbol, response: response)
             }
         }
-        semaphore.signal()
     }
     
     func detailedBook(_ symbol: String, response: @escaping (DetailedBookModel) -> Void) {
-        semaphore.wait()
         detailedBookControllers[symbol.lowercased()] = makeDetailedBookController()
         detailedBookControllers[symbol.lowercased()]?.subscribe(symbol) { [weak self] result in
             switch result {
@@ -71,11 +72,9 @@ extension CedroWebSocket {
                 self?.detailedBook(symbol, response: response)
             }
         }
-        semaphore.signal()
     }
     
     func businessBook(_ symbol: String, response: @escaping (BusinessBookModel) -> Void) {
-        semaphore.wait()
         businessBookControllers[symbol.lowercased()] = makeBusinessBookController()
         businessBookControllers[symbol.lowercased()]?.subscribe(symbol) { [weak self] result in
             switch result {
@@ -85,11 +84,9 @@ extension CedroWebSocket {
                 self?.businessBook(symbol, response: response)
             }
         }
-        semaphore.signal()
     }
     
     func volumeAtPrice(_ symbol: String, response: @escaping (VolumeAtPriceModel) -> Void) {
-        semaphore.wait()
         volumeAtPriceControllers[symbol.lowercased()] = makeVolumeAtPriceController()
         volumeAtPriceControllers[symbol.lowercased()]?.subscribe(symbol) { [weak self] result in
             switch result {
@@ -99,6 +96,5 @@ extension CedroWebSocket {
                 self?.volumeAtPrice(symbol, response: response)
             }
         }
-        semaphore.signal()
     }
 }
