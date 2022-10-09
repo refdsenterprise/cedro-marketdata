@@ -38,7 +38,7 @@ final class VolumeAtPriceController {
         semaphore.signal()
     }
     
-    public func unsubscribe() {
+    func unsubscribe() {
         semaphore.wait()
         presenter?.volumeAtPrice(
             withBody: GetVolumeAtPriceModel(

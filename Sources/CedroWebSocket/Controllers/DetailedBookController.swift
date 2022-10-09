@@ -38,7 +38,7 @@ final class DetailedBookController {
         semaphore.signal()
     }
     
-    public func unsubscribe() {
+    func unsubscribe() {
         semaphore.wait()
         presenter?.detailedBook(
             withBody: GetDetailedBookModel(

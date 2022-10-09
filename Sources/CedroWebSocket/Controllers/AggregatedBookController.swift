@@ -38,7 +38,7 @@ final class AggregatedBookController {
         semaphore.signal()
     }
     
-    public func unsubscribe() {
+    func unsubscribe() {
         semaphore.wait()
         presenter?.aggregatedBook(
             withBody: GetAggregatedBookModel(

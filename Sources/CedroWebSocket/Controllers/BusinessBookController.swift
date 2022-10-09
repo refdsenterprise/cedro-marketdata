@@ -38,7 +38,7 @@ final class BusinessBookController {
         semaphore.signal()
     }
     
-    public func unsubscribe() {
+    func unsubscribe() {
         semaphore.wait()
         presenter?.businessBook(
             withBody: GetBusinessBookModel(
