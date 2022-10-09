@@ -2,29 +2,36 @@ import Foundation
 import CedroWebSocket
 
 func main() {
-    CedroWebSocket.shared.start(username: "fasttrade", password: "102030")
+    let queue = DispatchQueue(label: "cedro.websocket", qos: .background, attributes: .concurrent)
     
-    CedroWebSocket.shared.subscribe(on: .aggregatedBook("petr4", response: { aggregatedBook in
-        aggregatedBook.logger(additionalMessage: nil).console()
-    }))
+    CedroWebSocket.shared.start(username: "any-username", password: "any-password")
     
-    CedroWebSocket.shared.subscribe(on: .detailedBook("petr4", response: { detailedBook in
-        detailedBook.logger(additionalMessage: nil).console()
-    }))
+    let subscribers: [CedroWebSocketService.Subscribe] = [
+        .aggregatedBook("petr4") { $0.logger(additionalMessage: nil).console() },
+        .detailedBook("petr4") { $0.logger(additionalMessage: nil).console() },
+        .businessBook("petr4") { $0.logger(additionalMessage: nil).console() },
+        .volumeAtPrice("petr4") { $0.logger(additionalMessage: nil).console() }
+    ]
     
-    CedroWebSocket.shared.subscribe(on: .businessBook("petr4", response: { businessBook in
-        businessBook.logger(additionalMessage: nil).console()
-    }))
+    let unsubscribers: [CedroWebSocketService.Unsubscribe] = [
+        .aggregatedBook("petr4"),
+        .detailedBook("petr4"),
+        .businessBook("petr4"),
+        .volumeAtPrice("petr4")
+    ]
     
-    CedroWebSocket.shared.subscribe(on: .volumeAtPrice("petr4", response: { volumeAtPrice in
-        volumeAtPrice.logger(additionalMessage: nil).console()
-    }))
+    subscribers.forEach { subscribe in
+        queue.async {
+            CedroWebSocket.shared.subscribe(on: subscribe)
+        }
+    }
     
     DispatchQueue.main.asyncAfter(deadline: .now() + 15) {
-        CedroWebSocket.shared.unsubscribe(on: .aggregatedBook("petr4"))
-        CedroWebSocket.shared.unsubscribe(on: .detailedBook("petr4"))
-        CedroWebSocket.shared.unsubscribe(on: .businessBook("petr4"))
-        CedroWebSocket.shared.unsubscribe(on: .volumeAtPrice("petr4"))
+        unsubscribers.forEach { unsubscribe in
+            queue.async {
+                CedroWebSocket.shared.unsubscribe(on: unsubscribe)
+            }
+        }
     }
 }
 
