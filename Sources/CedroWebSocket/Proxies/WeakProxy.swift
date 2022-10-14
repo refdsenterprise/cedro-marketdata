@@ -53,3 +53,14 @@ extension WeakProxy: VolumeAtPricePresenterDelegate where T: VolumeAtPricePresen
         instance?.volumeAtPrice(didReceive: volumeAtPriceModel)
     }
 }
+
+// MARK: - QuotePresenterDelegate
+extension WeakProxy: QuotePresenterDelegate where T: QuotePresenterDelegate {
+    func quote(didReceive error: CedroError) {
+        instance?.quote(didReceive: error)
+    }
+    
+    func quote(didReceive quoteModel: QuoteModel, updatedFields: [QuoteValuesModel.CodingKeys]) {
+        instance?.quote(didReceive: quoteModel, updatedFields: updatedFields)
+    }
+}

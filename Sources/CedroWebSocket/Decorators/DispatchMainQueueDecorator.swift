@@ -49,3 +49,12 @@ extension DispatchMainQueueDecorator: GetVolumeAtPrice where T: GetVolumeAtPrice
         }
     }
 }
+
+// MARK: - GetQuote
+extension DispatchMainQueueDecorator: GetQuote where T: GetQuote {
+    public func get(withBody body: GetQuoteModel, completion: @escaping (GetQuote.Result) -> Void) {
+        instance.get(withBody: body) { [weak self] result in
+            self?.dispatch { completion(result) }
+        }
+    }
+}

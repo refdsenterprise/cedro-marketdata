@@ -12,6 +12,7 @@ public final class CedroWebSocket {
     private var detailedBookControllers = [String: DetailedBookController]()
     private var businessBookControllers = [String: BusinessBookController]()
     private var volumeAtPriceControllers = [String: VolumeAtPriceController]()
+    private var quoteControllers = [String: QuoteController]()
     
     init() { semaphore.wait() }
     
@@ -33,6 +34,7 @@ public final class CedroWebSocket {
         case .detailedBook(let symbol, let response): detailedBook(symbol, response: response)
         case .businessBook(let symbol, let response): businessBook(symbol, response: response)
         case .volumeAtPrice(let symbol, let response): volumeAtPrice(symbol, response: response)
+        case .quote(let symbol, let response): quote(symbol, response: response)
         }
         semaphore.signal()
     }
@@ -44,6 +46,7 @@ public final class CedroWebSocket {
         case .detailedBook(let symbol): detailedBookControllers.removeValue(forKey: symbol.lowercased())
         case .businessBook(let symbol): businessBookControllers.removeValue(forKey: symbol.lowercased())
         case .volumeAtPrice(let symbol): volumeAtPriceControllers.removeValue(forKey: symbol.lowercased())
+        case .quote(let symbol): quoteControllers.removeValue(forKey: symbol.lowercased())
         }
         semaphore.signal()
     }
@@ -94,6 +97,18 @@ extension CedroWebSocket {
             case .failure(_):
                 self?.volumeAtPriceControllers.removeValue(forKey: symbol.lowercased())
                 self?.volumeAtPrice(symbol, response: response)
+            }
+        }
+    }
+    
+    func quote(_ symbol: String, response: @escaping (_ quote: QuoteModel, _ updatedFields: [QuoteValuesModel.CodingKeys]) -> Void) {
+        quoteControllers[symbol.lowercased()] = makeQuoteController()
+        quoteControllers[symbol.lowercased()]?.subscribe(symbol) { [weak self] quote, updatedFields in
+            switch quote {
+            case.success(let quoteModel): response(quoteModel, updatedFields)
+            case .failure(_):
+                self?.quoteControllers.removeValue(forKey: symbol.lowercased())
+                self?.quote(symbol, response: response)
             }
         }
     }
