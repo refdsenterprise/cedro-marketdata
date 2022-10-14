@@ -10,14 +10,16 @@ func main() {
         .aggregatedBook("petr4") { $0.logger(additionalMessage: nil).console() },
         .detailedBook("petr4") { $0.logger(additionalMessage: nil).console() },
         .businessBook("petr4") { $0.logger(additionalMessage: nil).console() },
-        .volumeAtPrice("petr4") { $0.logger(additionalMessage: nil).console() }
+        .volumeAtPrice("petr4") { $0.logger(additionalMessage: nil).console() },
+        .quote("petr4") { $0.logger(additionalMessage: nil).console(); $1.logger(additionalMessage: nil).console() }
     ]
     
     let unsubscribers: [CedroWebSocketService.Unsubscribe] = [
         .aggregatedBook("petr4"),
         .detailedBook("petr4"),
         .businessBook("petr4"),
-        .volumeAtPrice("petr4")
+        .volumeAtPrice("petr4"),
+        .quote("petr4")
     ]
     
     subscribers.forEach { subscribe in
