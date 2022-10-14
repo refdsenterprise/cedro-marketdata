@@ -20,7 +20,7 @@ Os serviços baseados na API WebSocket dão autorização para que as aplicaçõ
 
 - [X] Livro de Ofertas Agregado - `Aggregated Book`
 - [X] Livro de Ofertas Detalhado - `Detailed Book`
-- [ ] Cotação - `Quote`
+- [X] Cotação - `Quote`
 - [X] Negócios Realizados - `Business Book`
 - [X] Volume por Preço - `Volume At Price`
 - [ ] Gráfico de Candles - `Candle Chart`
@@ -61,14 +61,16 @@ class SomeViewController {
             .aggregatedBook("petr4") { $0.logger(additionalMessage: nil).console() },
             .detailedBook("petr4") { $0.logger(additionalMessage: nil).console() },
             .businessBook("petr4") { $0.logger(additionalMessage: nil).console() },
-            .volumeAtPrice("petr4") { $0.logger(additionalMessage: nil).console() }
+            .volumeAtPrice("petr4") { $0.logger(additionalMessage: nil).console() },
+            .quote("petr4") { $0.logger(additionalMessage: nil).console(); $1.logger(additionalMessage: nil).console() }
         ]
     
         let unsubscribers: [CedroWebSocketService.Unsubscribe] = [
             .aggregatedBook("petr4"),
             .detailedBook("petr4"),
             .businessBook("petr4"),
-            .volumeAtPrice("petr4")
+            .volumeAtPrice("petr4"),
+            .quote("petr4")
         ]
     
         subscribers.forEach { subscribe in
