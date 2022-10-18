@@ -23,7 +23,7 @@ Os serviços baseados na API WebSocket dão autorização para que as aplicaçõ
 - [X] Cotação - `Quote`
 - [X] Negócios Realizados - `Business Book`
 - [X] Volume por Preço - `Volume At Price`
-- [ ] Gráfico de Candles - `Candle Chart`
+- [X] Gráfico de Candles - `Candle Chart`
 
 ### Instalação
 
@@ -62,7 +62,12 @@ class SomeViewController {
             .detailedBook("petr4") { $0.logger(additionalMessage: nil).console() },
             .businessBook("petr4") { $0.logger(additionalMessage: nil).console() },
             .volumeAtPrice("petr4") { $0.logger(additionalMessage: nil).console() },
-            .quote("petr4") { $0.logger(additionalMessage: nil).console(); $1.logger(additionalMessage: nil).console() }
+            .quote("petr4") { $0.logger(additionalMessage: nil).console(); $1.logger(additionalMessage: nil).console() },
+            .candleChart("petr4", period: .oneMinute, realTime: true, response: { response in
+                response.logger(additionalMessage: nil).console()
+            }, manager: { manager in
+                manager.candles.logger(additionalMessage: nil).console()
+            })
         ]
     
         let unsubscribers: [CedroWebSocketService.Unsubscribe] = [
@@ -70,7 +75,8 @@ class SomeViewController {
             .detailedBook("petr4"),
             .businessBook("petr4"),
             .volumeAtPrice("petr4"),
-            .quote("petr4")
+            .quote("petr4"),
+            .candleChart("petr4")
         ]
     
         subscribers.forEach { subscribe in
