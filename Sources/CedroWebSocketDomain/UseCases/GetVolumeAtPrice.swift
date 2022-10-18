@@ -12,10 +12,10 @@ public struct GetVolumeAtPriceModel: CedroModel {
     public var parameterGet: String
     public var parameters: GetVolumeAtPriceParameters
     
-    public init(token: String, parameterGet: String, parameters: GetVolumeAtPriceParameters) {
+    public init(token: String, parameterGet: String, dispatch: DispatchType) {
         self.token = token
         self.parameterGet = parameterGet
-        self.parameters = parameters
+        self.parameters = GetVolumeAtPriceParameters(dispatch: dispatch)
     }
 }
 

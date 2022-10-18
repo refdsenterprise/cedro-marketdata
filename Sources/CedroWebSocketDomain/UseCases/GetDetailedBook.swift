@@ -12,10 +12,10 @@ public struct GetDetailedBookModel: CedroModel {
     public var parameterGet: String
     public var parameters: GetDetailedBookParameters
     
-    public init(token: String, parameterGet: String, parameters: GetDetailedBookParameters) {
+    public init(token: String, parameterGet: String, subsbribetype: SubscribeType, amount: Int = 100, delay: Int? = nil) {
         self.token = token
         self.parameterGet = parameterGet
-        self.parameters = parameters
+        self.parameters = GetDetailedBookParameters(subsbribetype: subsbribetype, amount: amount, delay: delay)
     }
 }
 

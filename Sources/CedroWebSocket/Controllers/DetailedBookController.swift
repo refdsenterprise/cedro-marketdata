@@ -24,7 +24,10 @@ final class DetailedBookController {
         }
     }
     
-    deinit { unsubscribe() }
+    deinit {
+        unsubscribe()
+        presenter = nil
+    }
     
     func subscribe(_ symbol: String, response: ((GetDetailedBook.Result) -> Void)? = nil) {
         self.response = response
@@ -34,7 +37,7 @@ final class DetailedBookController {
             withBody: GetDetailedBookModel(
                 token: tokenWebSocket,
                 parameterGet: currentSymbol,
-                parameters: GetDetailedBookParameters(subsbribetype: .start)))
+                subsbribetype: .start))
         semaphore.signal()
     }
     
@@ -44,7 +47,7 @@ final class DetailedBookController {
             withBody: GetDetailedBookModel(
                 token: tokenWebSocket,
                 parameterGet: currentSymbol,
-                parameters: GetDetailedBookParameters(subsbribetype: .end)))
+                subsbribetype: .end))
         semaphore.signal()
     }
 }

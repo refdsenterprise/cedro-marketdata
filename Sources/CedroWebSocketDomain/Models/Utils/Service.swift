@@ -6,4 +6,5 @@ public enum Service: String, CedroModel {
     case businessBook = "quoteTrade"
     case volumeAtPrice = "volumeAtPrice"
     case quote = "quote"
+    case candleChart = "candleChart"
 }

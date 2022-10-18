@@ -58,3 +58,12 @@ extension DispatchMainQueueDecorator: GetQuote where T: GetQuote {
         }
     }
 }
+
+// MARK: - GetCandleChart
+extension DispatchMainQueueDecorator: GetCandleChart where T: GetCandleChart {
+    public func get(withBody body: GetCandleChartModel, completion: @escaping (GetCandleChart.Result) -> Void) {
+        instance.get(withBody: body) { [weak self] result in
+            self?.dispatch { completion(result) }
+        }
+    }
+}

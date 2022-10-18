@@ -24,7 +24,10 @@ final class BusinessBookController {
         }
     }
     
-    deinit { unsubscribe() }
+    deinit {
+        unsubscribe()
+        presenter = nil
+    }
     
     func subscribe(_ symbol: String, response: ((GetBusinessBook.Result) -> Void)? = nil) {
         self.response = response
@@ -34,7 +37,7 @@ final class BusinessBookController {
             withBody: GetBusinessBookModel(
                 token: tokenWebSocket,
                 parameterGet: currentSymbol,
-                parameters: GetBusinessBookParameters(subsbribetype: .start)))
+                subsbribetype: .start))
         semaphore.signal()
     }
     
@@ -44,7 +47,7 @@ final class BusinessBookController {
             withBody: GetBusinessBookModel(
                 token: tokenWebSocket,
                 parameterGet: currentSymbol,
-                parameters: GetBusinessBookParameters(subsbribetype: .end)))
+                subsbribetype: .end))
         semaphore.signal()
     }
 }

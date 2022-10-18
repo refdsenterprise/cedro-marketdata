@@ -24,7 +24,10 @@ final class AggregatedBookController {
         }
     }
     
-    deinit { unsubscribe() }
+    deinit {
+        unsubscribe()
+        presenter = nil
+    }
     
     func subscribe(_ symbol: String, response: ((GetAggregatedBook.Result) -> Void)? = nil) {
         self.response = response
@@ -34,7 +37,7 @@ final class AggregatedBookController {
             withBody: GetAggregatedBookModel(
                 token: tokenWebSocket,
                 parameterGet: currentSymbol,
-                parameters: GetAggregatedBookParameters(subsbribetype: .start)))
+                subsbribetype: .start))
         semaphore.signal()
     }
     
@@ -44,7 +47,7 @@ final class AggregatedBookController {
             withBody: GetAggregatedBookModel(
                 token: tokenWebSocket,
                 parameterGet: currentSymbol,
-                parameters: GetAggregatedBookParameters(subsbribetype: .end)))
+                subsbribetype: .end))
         semaphore.signal()
     }
 }

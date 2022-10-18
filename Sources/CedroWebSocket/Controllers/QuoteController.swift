@@ -24,7 +24,10 @@ final class QuoteController {
         }
     }
     
-    deinit { unsubscribe() }
+    deinit {
+        unsubscribe()
+        presenter = nil
+    }
     
     func subscribe(_ symbol: String, response: ((_ quote: GetQuote.Result, _ updatedFields: [QuoteValuesModel.CodingKeys]) -> Void)? = nil) {
         self.response = response
@@ -34,7 +37,7 @@ final class QuoteController {
             withBody: GetQuoteModel(
                 token: tokenWebSocket,
                 parameterGet: currentSymbol,
-                parameters: GetQuoteParameters(subsbribetype: .start)))
+                subsbribetype: .start))
         semaphore.signal()
     }
     
@@ -44,7 +47,7 @@ final class QuoteController {
             withBody: GetQuoteModel(
                 token: tokenWebSocket,
                 parameterGet: currentSymbol,
-                parameters: GetQuoteParameters(subsbribetype: .end)))
+                subsbribetype: .end))
         semaphore.signal()
     }
 }

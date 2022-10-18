@@ -12,10 +12,10 @@ public struct GetQuoteModel: CedroModel {
     public var parameterGet: String
     public var parameters: GetQuoteParameters
     
-    public init(token: String, parameterGet: String, parameters: GetQuoteParameters) {
+    public init(token: String, parameterGet: String, subsbribetype: SubscribeType, fields: [QuoteValuesModel.CodingKeys] = QuoteValuesModel.CodingKeys.allCases, delay: Int? = nil) {
         self.token = token
         self.parameterGet = parameterGet
-        self.parameters = parameters
+        self.parameters = GetQuoteParameters(subsbribetype: subsbribetype, fields: fields, delay: delay)
     }
 }
 
@@ -24,85 +24,7 @@ public struct GetQuoteParameters: CedroModel {
     public var filter: String
     public var delay: String = ""
     
-    public init(subsbribetype: SubscribeType, fields: [QuoteValuesModel.CodingKeys] = [
-        .lastModificationTime,
-        .lastModificationDate,
-        .lastBusinessPrice,
-        .bestBuyOffer,
-        .bestSellingOffer,
-        .timeOfLastDeal,
-        .quantityOfLastTrade,
-        .amountOfTradesDone,
-        .cumulativeVolumeOfTrades,
-        .financialVolumeOfTrades,
-        .highestPriceOfTheDay,
-        .lowestPriceOfTheDay,
-        .previousDaysClosingPrice,
-        .openingPrice,
-        .accumulatedVolumeOfTheBestBuys,
-        .accumulatedVolumeOfBestSellingOffers,
-        .volumeOfTheBestBuyOffer,
-        .volumeOfBestSellingOffer,
-        .variation,
-        .lastWeeksClosingPrice,
-        .lastMonthsClosingPrice,
-        .lastYearsClosingPrice,
-        .previousDaysOpeningPrice,
-        .highestPriceOfTheDayBefore,
-        .lowestPriceOfPreviousDay,
-        .average,
-        .vhDaily,
-        .marketCode,
-        .assetTypeCode,
-        .defaultBatch,
-        .assetDescription,
-        .sortName,
-        .quotationForm,
-        .dateOfLastTrade,
-        .meaningOfMissedOffersAtOpeningPrice,
-        .quantityNotMetAtOpeningPrice,
-        .scheduledTimeToOpenThePaper,
-        .rescheduledTimeForPaperOpening,
-        .expirationDate,
-        .expired,
-        .totalNumberOfRoles,
-        .instrumentStatus,
-        .optionType,
-        .theoreticalOpeningPrice,
-        .theoreticalQuantity,
-        .diffCurrentPricePrevious,
-        .averageVolumeOverLast20Days,
-        .calculatedVariationFieldAccordingly,
-        .dayClosingValue,
-        .closingAmountInOneMonth,
-        .fieldCalculatedFromVariationAccordingTo1MonthClosingValue,
-        .closingValueInOneYear,
-        .fieldCalculatedFromVariationAccordingTo1YearClosingValue,
-        .ticksize,
-        .variationOfHourlyVolumeBasedOnAverageHourlyVolumeOverLast20Days,
-        .volumeToTimeVariationBasedOnAverageVolumeToTimeOverLast20Days,
-        .assetStatus,
-        .strikePrice,
-        .assetGroupPhase,
-        .numberOfOpenContracts,
-        .numberOfBusinessDaysUntilExpiration,
-        .numberOfDaysToExpire,
-        .settingOfTheDay,
-        .adjustmentFromThePreviousDay,
-        .securityidBMFFix,
-        .tickdirectionBMFFIX,
-        .tunnelUpperLimit,
-        .tunnelLowerLimit,
-        .minimumInstrumentTradingVolume,
-        .minimumRangeForPriceIncrements,
-        .currencyUsedInPrice,
-        .securityType,
-        .optionStrikePrice,
-        .contractMultiplier,
-        .currentAdjustmentInRate,
-        .previousAdjustmentInRate,
-        .numberOfWithdrawalsUntilDueDate
-    ], delay: Int? = nil) {
+    public init(subsbribetype: SubscribeType, fields: [QuoteValuesModel.CodingKeys] = QuoteValuesModel.CodingKeys.allCases, delay: Int? = nil) {
         self.subsbribetype = subsbribetype
         self.filter = "\(fields.map({ $0.rawValue }).joined(separator: ","))"
         if let delay = delay { self.delay = "\(delay)" }

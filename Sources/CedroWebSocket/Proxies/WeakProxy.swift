@@ -64,3 +64,14 @@ extension WeakProxy: QuotePresenterDelegate where T: QuotePresenterDelegate {
         instance?.quote(didReceive: quoteModel, updatedFields: updatedFields)
     }
 }
+
+// MARK: - CandleChartPresenterDelegate
+extension WeakProxy: CandleChartPresenterDelegate where T: CandleChartPresenterDelegate {
+    func candleChart(didReceive error: CedroError) {
+        instance?.candleChart(didReceive: error)
+    }
+    
+    func candleChart(didReceive candleChartModel: CandleChartModel) {
+        instance?.candleChart(didReceive: candleChartModel)
+    }
+}

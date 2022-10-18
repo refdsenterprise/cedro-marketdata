@@ -24,7 +24,10 @@ final class VolumeAtPriceController {
         }
     }
     
-    deinit { unsubscribe() }
+    deinit {
+        unsubscribe()
+        presenter = nil
+    }
     
     func subscribe(_ symbol: String, response: ((GetVolumeAtPrice.Result) -> Void)? = nil) {
         self.response = response
@@ -34,7 +37,7 @@ final class VolumeAtPriceController {
             withBody: GetVolumeAtPriceModel(
                 token: tokenWebSocket,
                 parameterGet: currentSymbol,
-                parameters: GetVolumeAtPriceParameters(dispatch: .start)))
+                dispatch: .start))
         semaphore.signal()
     }
     
@@ -44,7 +47,7 @@ final class VolumeAtPriceController {
             withBody: GetVolumeAtPriceModel(
                 token: tokenWebSocket,
                 parameterGet: currentSymbol,
-                parameters: GetVolumeAtPriceParameters(dispatch: .end)))
+                dispatch: .end))
         semaphore.signal()
     }
 }
