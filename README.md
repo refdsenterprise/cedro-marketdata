@@ -21,7 +21,8 @@ Os serviços baseados na API WebSocket dão autorização para que as aplicaçõ
 - [X] Livro de Ofertas Agregado - `Aggregated Book`
 - [X] Livro de Ofertas Detalhado - `Detailed Book`
 - [X] Cotação - `Quote`
-- [X] Negócios Realizados - `Business Book`
+- [X] Negócios Realizados Detalhado - `Detailed Business Book`
+- [X] Negócios Realizados Agregado - `Aggregated Business Book`
 - [X] Volume por Preço - `Volume At Price`
 - [X] Gráfico de Candles - `Candle Chart`
 

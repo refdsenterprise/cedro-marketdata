@@ -38,19 +38,16 @@ public final class BusinessBookManager {
         
         aggregatedBusinessBook = Array(_aggregatedBusinessBook.values.sorted(by: { $0.date < $1.date }))
         
-        if _aggregatedBusinessBook.count > 100, aggregatedBusinessBook.count > 50 {
-            _ = _aggregatedBusinessBook.drop { trade in
-                return Array(aggregatedBusinessBook[0 ... 49]).contains(where: {
-                    if let aggressor = $0.aggressor, let broker = aggressor == .buyer ? $0.brokerBuyer : aggressor == .seller ? $0.brokerSeller : nil {
-                        let key = Keys.complete(symbol: newValue.quoteTrade.symbol, date: $0.date, dateFormat: .second, broker: broker, aggressor: aggressor)
-                        return trade.key.rawValue == key.rawValue
-                    }
-                    return false
-                })
+        mainQueue.async { [weak self] in self?.observer?() }
+        
+        if _aggregatedBusinessBook.values.count > 100 && aggregatedBusinessBook.count > 100 {
+            Array(aggregatedBusinessBook[0 ... 49]).forEach { [weak self] in
+                if let aggressor = $0.aggressor, let broker = aggressor == .buyer ? $0.brokerBuyer : aggressor == .seller ? $0.brokerSeller : nil {
+                    let key = Keys.complete(symbol: newValue.quoteTrade.symbol, date: $0.date, dateFormat: .second, broker: broker, aggressor: aggressor)
+                    self?._aggregatedBusinessBook.removeValue(forKey: key)
+                }
             }
         }
-        
-        mainQueue.async { [weak self] in self?.observer?() }
     }
     
 }
