@@ -23,15 +23,15 @@ public final class BusinessBookManager {
     }
     
     func update(withNewValue newValue: BusinessBookModel) {
-        for trade in newValue.quoteTrade.trades {
+        newValue.quoteTrade.trades.forEach { [weak self] trade in
             if let aggressor = trade.aggressor, let broker = aggressor == .buyer ? trade.brokerBuyer : aggressor == .seller ? trade.brokerSeller : nil {
                 let key = Keys.complete(symbol: newValue.quoteTrade.symbol, date: trade.date, dateFormat: .second, broker: broker, aggressor: aggressor)
-                if let _ = _aggregatedBusinessBook[key] {
-                    _aggregatedBusinessBook[key]?.amount += trade.amount
-                    if aggressor == .buyer { _aggregatedBusinessBook[key]?.brokerSeller = nil }
-                    else if aggressor == .seller { _aggregatedBusinessBook[key]?.brokerBuyer = nil }
+                if let _ = self?._aggregatedBusinessBook[key] {
+                    self?._aggregatedBusinessBook[key]?.amount += trade.amount
+                    if aggressor == .buyer { self?._aggregatedBusinessBook[key]?.brokerSeller = nil }
+                    else if aggressor == .seller { self?._aggregatedBusinessBook[key]?.brokerBuyer = nil }
                 } else {
-                    _aggregatedBusinessBook[key] = trade
+                    self?._aggregatedBusinessBook[key] = trade
                 }
             }
         }
