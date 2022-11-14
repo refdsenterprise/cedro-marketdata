@@ -12,9 +12,8 @@ public final class BusinessBookPresenter {
     public let manager: BusinessBookManager = .instance
     
     private let managerQueue = DispatchQueue(
-        label: "cedro.websocket.candleChart.presenter.manager",
-        qos: .background,
-        attributes: .concurrent
+        label: "cedro.websocket.businessBook.presenter.manager",
+        qos: .unspecified
     )
     
     public init(useCase: GetBusinessBook, delegate: BusinessBookPresenterDelegate) {

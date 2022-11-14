@@ -13,8 +13,7 @@ public final class CandleChartPresenter {
     
     private let managerQueue = DispatchQueue(
         label: "cedro.websocket.candleChart.presenter.manager",
-        qos: .background,
-        attributes: .concurrent
+        qos: .unspecified
     )
     
     public init(useCase: GetCandleChart, delegate: CandleChartPresenterDelegate) {
