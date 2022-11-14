@@ -9,7 +9,13 @@ public protocol BusinessBookPresenterDelegate {
 public final class BusinessBookPresenter {
     private let useCase: GetBusinessBook
     private let delegate: BusinessBookPresenterDelegate
-    public private(set) var businessBookResponse: BusinessBookModel?
+    public let manager: BusinessBookManager = .instance
+    
+    private let managerQueue = DispatchQueue(
+        label: "cedro.websocket.candleChart.presenter.manager",
+        qos: .background,
+        attributes: .concurrent
+    )
     
     public init(useCase: GetBusinessBook, delegate: BusinessBookPresenterDelegate) {
         self.useCase = useCase
@@ -21,7 +27,8 @@ public final class BusinessBookPresenter {
             guard let self = self else { return }
             switch result {
             case .success(let model):
-                self.businessBookResponse = model
+                self.manager._response = model
+                self.managerQueue.async { self.manager.update(withNewValue: model) }
                 self.delegate.businessBook(didReceive: model)
             case .failure(let error):
                 self.delegate.businessBook(didReceive: error)

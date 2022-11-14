@@ -9,8 +9,7 @@ public protocol CandleChartPresenterDelegate {
 public final class CandleChartPresenter {
     private let useCase: GetCandleChart
     private let delegate: CandleChartPresenterDelegate
-    public let manager: CandleChartManager
-    public private(set) var candleChartResponse: CandleChartModel?
+    public let manager: CandleChartManager = .instance
     
     private let managerQueue = DispatchQueue(
         label: "cedro.websocket.candleChart.presenter.manager",
@@ -21,7 +20,6 @@ public final class CandleChartPresenter {
     public init(useCase: GetCandleChart, delegate: CandleChartPresenterDelegate) {
         self.useCase = useCase
         self.delegate = delegate
-        manager = CandleChartManager.instance
     }
     
     public func candleChart(withBody body: GetCandleChartModel) {
@@ -29,8 +27,8 @@ public final class CandleChartPresenter {
             guard let self = self else { return }
             switch result {
             case .success(let model):
-                self.candleChartResponse = model
-                self.managerQueue.sync { self.manager.updateCandles(withNewValue: model) }
+                self.manager._response = model
+                self.managerQueue.async { self.manager.update(withNewValue: model) }
                 self.delegate.candleChart(didReceive: model)
             case .failure(let error):
                 self.delegate.candleChart(didReceive: error)

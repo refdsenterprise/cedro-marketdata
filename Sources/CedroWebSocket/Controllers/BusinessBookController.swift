@@ -29,10 +29,13 @@ final class BusinessBookController {
         presenter = nil
     }
     
-    func subscribe(_ symbol: String, response: ((GetBusinessBook.Result) -> Void)? = nil) {
+    func subscribe(_ symbol: String, response: ((GetBusinessBook.Result) -> Void)? = nil, manager: ((BusinessBookManager) -> Void)? = nil) {
         self.response = response
         self.currentSymbol = symbol
         semaphore.wait()
+        presenter?.manager.observer = { [weak self] in
+            if let presenterManager = self?.presenter?.manager { manager?(presenterManager) }
+        }
         presenter?.businessBook(
             withBody: GetBusinessBookModel(
                 token: tokenWebSocket,

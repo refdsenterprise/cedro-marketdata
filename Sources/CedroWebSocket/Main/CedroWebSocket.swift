@@ -1,6 +1,7 @@
 import Foundation
 import CedroAuthentication
 import CedroWebSocketDomain
+import CedroWebSocketPresentation
 
 public final class CedroWebSocket {
     public static let shared = CedroWebSocket()
@@ -31,11 +32,11 @@ public final class CedroWebSocket {
     public func subscribe(on service: CedroWebSocketService.Subscribe) {
         semaphore.wait()
         switch service {
-        case .aggregatedBook(let symbol, let response): aggregatedBook(symbol, response: response)
-        case .detailedBook(let symbol, let response): detailedBook(symbol, response: response)
-        case .businessBook(let symbol, let response): businessBook(symbol, response: response)
-        case .volumeAtPrice(let symbol, let response): volumeAtPrice(symbol, response: response)
-        case .quote(let symbol, let response): quote(symbol, response: response)
+        case let .aggregatedBook(symbol, response): aggregatedBook(symbol, response: response)
+        case let .detailedBook(symbol, response): detailedBook(symbol, response: response)
+        case let .businessBook(symbol, response, manager): businessBook(symbol, response: response, manager: manager)
+        case let .volumeAtPrice(symbol, response): volumeAtPrice(symbol, response: response)
+        case let .quote(symbol, response): quote(symbol, response: response)
         case let .candleChart(symbol, period, realTime, quantity, initDate, response, manager): candleChart(symbol, period: period, realTime: realTime, quantity: quantity, initDate: initDate, response: response, manager: manager)
         }
         semaphore.signal()
@@ -80,16 +81,16 @@ extension CedroWebSocket {
         }
     }
     
-    func businessBook(_ symbol: String, response: ((BusinessBookModel) -> Void)? = nil) {
+    func businessBook(_ symbol: String, response: ((BusinessBookModel) -> Void)? = nil, manager: ((BusinessBookManager) -> Void)? = nil) {
         businessBookControllers[symbol.lowercased()] = makeBusinessBookController()
-        businessBookControllers[symbol.lowercased()]?.subscribe(symbol) { [weak self] result in
+        businessBookControllers[symbol.lowercased()]?.subscribe(symbol, response: { [weak self] result in
             switch result {
             case.success(let businessBookModel): response?(businessBookModel)
             case .failure(_):
                 self?.businessBookControllers.removeValue(forKey: symbol.lowercased())
                 self?.businessBook(symbol, response: response)
             }
-        }
+        }, manager: manager)
     }
     
     func volumeAtPrice(_ symbol: String, response: ((VolumeAtPriceModel) -> Void)? = nil) {

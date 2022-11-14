@@ -9,7 +9,11 @@ func main() {
     let subscribers: [CedroWebSocketService.Subscribe] = [
         .aggregatedBook("petr4") { $0.logger(additionalMessage: nil).console() },
         .detailedBook("petr4") { $0.logger(additionalMessage: nil).console() },
-        .businessBook("petr4") { $0.logger(additionalMessage: nil).console() },
+        .businessBook("petr4", response: { response in
+            response.logger(additionalMessage: nil).console()
+        }, manager: { manager in
+            manager.aggregatedBusinessBook.logger(additionalMessage: nil).console()
+        }),
         .volumeAtPrice("petr4") { $0.logger(additionalMessage: nil).console() },
         .quote("petr4") { $0.logger(additionalMessage: nil).console(); $1.logger(additionalMessage: nil).console() },
         .candleChart("petr4", period: .oneMinute, realTime: true, response: { response in
@@ -34,7 +38,7 @@ func main() {
         }
     }
 
-    DispatchQueue.main.asyncAfter(deadline: .now() + 15) {
+    DispatchQueue.main.asyncAfter(deadline: .now() + 20) {
         unsubscribers.forEach { unsubscribe in
             queue.async {
                 CedroWebSocket.shared.unsubscribe(on: unsubscribe)

@@ -34,6 +34,12 @@ public struct BusinessBookTradeModel: CedroModel {
     }
 }
 
+extension BusinessBookTradeModel: Comparable {
+    public static func < (lhs: BusinessBookTradeModel, rhs: BusinessBookTradeModel) -> Bool {
+        return lhs.date < rhs.date
+    }
+}
+
 public enum BusinessBookTradeAggressorModel: String, CedroModel {
     case buyer = "A"
     case seller = "V"
