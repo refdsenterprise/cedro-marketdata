@@ -10,6 +10,7 @@ public final class BusinessBookPresenter {
     private let useCase: GetBusinessBook
     private let delegate: BusinessBookPresenterDelegate
     public let manager: BusinessBookManager = .instance
+    private let updateControl = DispatchSemaphore(value: 1)
     
     private let managerQueue = DispatchQueue(
         label: "cedro.websocket.businessBook.presenter.manager",
@@ -27,7 +28,11 @@ public final class BusinessBookPresenter {
             switch result {
             case .success(let model):
                 self.manager._response = model
-                self.managerQueue.async { self.manager.update(withNewValue: model) }
+                self.managerQueue.async { [weak self] in
+                    self?.updateControl.wait()
+                    self?.manager.update(withNewValue: model)
+                    self?.updateControl.signal()
+                }
                 self.delegate.businessBook(didReceive: model)
             case .failure(let error):
                 self.delegate.businessBook(didReceive: error)

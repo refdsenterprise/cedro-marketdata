@@ -10,6 +10,7 @@ public final class CandleChartPresenter {
     private let useCase: GetCandleChart
     private let delegate: CandleChartPresenterDelegate
     public let manager: CandleChartManager = .instance
+    private let updateControl = DispatchSemaphore(value: 1)
     
     private let managerQueue = DispatchQueue(
         label: "cedro.websocket.candleChart.presenter.manager",
@@ -27,7 +28,11 @@ public final class CandleChartPresenter {
             switch result {
             case .success(let model):
                 self.manager._response = model
-                self.managerQueue.async { self.manager.update(withNewValue: model) }
+                self.managerQueue.async { [weak self] in
+                    self?.updateControl.wait()
+                    self?.manager.update(withNewValue: model)
+                    self?.updateControl.signal()
+                }
                 self.delegate.candleChart(didReceive: model)
             case .failure(let error):
                 self.delegate.candleChart(didReceive: error)
