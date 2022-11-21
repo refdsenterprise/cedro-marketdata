@@ -1,6 +1,6 @@
-# Cedro Websocket
+# Cedro Market Data
 
-> WebSocket é uma API que estabelece conexões bilaterais de soquete entre um navegador e um servidor, permitindo assim a troca de dados com base em TCP. Ele fornece sinal de Market Data em que o recurso de cotação é entregue em streaming e em XML/JSON, disponível para os mercados B3 e Moedas.
+> Fornecer sinal de Market Data em que o recurso de cotação é entregue em streaming e em XML/JSON, disponível para os mercados B3 e Moedas.
 
 [![CI](https://github.com/rafaelesantos/cedro-streaming-websocket/actions/workflows/swift.yml/badge.svg)](https://github.com/rafaelesantos/cedro-streaming-websocket/actions/workflows/swift.yml)
 [![Swift Version][swift-image]][swift-url]
@@ -35,7 +35,7 @@ import PackageDescription
 
 let package = Package(
     dependencies: [
-        .package(url: "https://github.com/rafaelesantos/cedro-websocket.git", branch: "main")
+        .package(url: "https://github.com/rafaelesantos/cedro-marketdata.git", branch: "main")
     ],
     targets: [
         .target(
