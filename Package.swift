@@ -4,7 +4,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "CedroWebSocket",
+    name: "CedroMarketData",
     platforms: [
         .iOS(.v14),
         .macOS(.v12),
@@ -13,8 +13,8 @@ let package = Package(
     ],
     products: [
         .library(
-            name: "CedroWebSocket",
-            targets: ["CedroWebSocket"]),
+            name: "CedroMarketData",
+            targets: ["CedroMarketData"]),
     ],
     dependencies: [
         .package(url: "https://github.com/rafaelesantos/refds-core.git", branch: "main"),
@@ -22,34 +22,34 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "CedroWebSocket",
+            name: "CedroMarketData",
             dependencies: [
-                "CedroWebSocketDomain",
-                "CedroWebSocketData",
-                "CedroWebSocketInfra",
-                "CedroWebSocketPresentation",
+                "CedroMarketDataDomain",
+                "CedroMarketDataData",
+                "CedroMarketDataInfra",
+                "CedroMarketDataPresentation",
                 .product(name: "CedroAuthentication", package: "cedro-authentication")
             ]),
         .target(
-            name: "CedroWebSocketDomain",
+            name: "CedroMarketDataDomain",
             dependencies: [.product(name: "RefdsCore", package: "refds-core")]),
         .target(
-            name: "CedroWebSocketData",
+            name: "CedroMarketDataData",
             dependencies: [
-                "CedroWebSocketDomain",
+                "CedroMarketDataDomain",
                 .product(name: "RefdsCore", package: "refds-core")
             ]),
         .target(
-            name: "CedroWebSocketInfra",
+            name: "CedroMarketDataInfra",
             dependencies: [.product(name: "RefdsCore", package: "refds-core")]),
         .target(
-            name: "CedroWebSocketPresentation",
+            name: "CedroMarketDataPresentation",
             dependencies: [
-                "CedroWebSocketDomain",
+                "CedroMarketDataDomain",
                 .product(name: "RefdsCore", package: "refds-core")
             ]),
         .executableTarget(
             name: "Example",
-            dependencies: ["CedroWebSocket"])
+            dependencies: ["CedroMarketData"])
     ]
 )

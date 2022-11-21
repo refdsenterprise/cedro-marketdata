@@ -40,25 +40,25 @@ let package = Package(
     targets: [
         .target(
             name: "YourProject",
-            dependencies: ["CedroWebSocket"]),
+            dependencies: ["CedroMarketData"]),
     ]
 )
 ```
 
 ### Como Utilizar
 
-Para fazer uso da biblioteca é necessário importar o pacote `CedroWebSocket`. Em seguida, acesse o singleton do package e faça a chamada da funcionalidade que deseja.
+Para fazer uso da biblioteca é necessário importar o pacote `CedroMarketData`. Em seguida, acesse o singleton do package e faça a chamada da funcionalidade que deseja.
 
 ```swift
-import CedroWebSocket
+import CedroMarketData
 
 class SomeViewController {
     func someFunction() {
-        let queue = DispatchQueue(label: "cedro.websocket", qos: .background, attributes: .concurrent)
+        let queue = DispatchQueue(label: "cedro.marketData", qos: .background, attributes: .concurrent)
     
-        CedroWebSocket.shared.start(username: "any-username", password: "any-password")
+        CedroMarketData.shared.start(username: "any-username", password: "any-password")
     
-        let subscribers: [CedroWebSocketService.Subscribe] = [
+        let subscribers: [CedroMarketDataService.Subscribe] = [
             .aggregatedBook("petr4") { $0.logger(additionalMessage: nil).console() },
             .detailedBook("petr4") { $0.logger(additionalMessage: nil).console() },
             .businessBook("petr4") { $0.logger(additionalMessage: nil).console() },
@@ -71,7 +71,7 @@ class SomeViewController {
             })
         ]
     
-        let unsubscribers: [CedroWebSocketService.Unsubscribe] = [
+        let unsubscribers: [CedroMarketDataService.Unsubscribe] = [
             .aggregatedBook("petr4"),
             .detailedBook("petr4"),
             .businessBook("petr4"),
@@ -82,14 +82,14 @@ class SomeViewController {
     
         subscribers.forEach { subscribe in
             queue.async {
-                CedroWebSocket.shared.subscribe(on: subscribe)
+                CedroMarketData.shared.subscribe(on: subscribe)
             }
         }
     
         DispatchQueue.main.asyncAfter(deadline: .now() + 15) {
             unsubscribers.forEach { unsubscribe in
                 queue.async {
-                    CedroWebSocket.shared.unsubscribe(on: unsubscribe)
+                    CedroMarketData.shared.unsubscribe(on: unsubscribe)
                 }
             }
         }

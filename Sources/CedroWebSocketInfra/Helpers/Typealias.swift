@@ -1,3 +1,0 @@
-import RefdsInfra
-
-public typealias CedroWebSocketNetworkAdapter = WebSocketNetworkAdapter
