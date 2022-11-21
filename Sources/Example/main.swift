@@ -1,12 +1,12 @@
 import Foundation
-import CedroWebSocket
+import CedroMarketData
 
 func main() {
     let queue = DispatchQueue(label: "cedro.websocket", qos: .background, attributes: .concurrent)
 
-    CedroWebSocket.shared.start(username: "any-username", password: "any-password")
+    CedroMarketData.shared.start(username: "any-username", password: "any-password")
 
-    let subscribers: [CedroWebSocketService.Subscribe] = [
+    let subscribers: [CedroMarketDataService.Subscribe] = [
         .aggregatedBook("petr4") { $0.logger(additionalMessage: nil).console() },
         .detailedBook("petr4") { $0.logger(additionalMessage: nil).console() },
         .businessBook("petr4", response: { response in
@@ -23,7 +23,7 @@ func main() {
         })
     ]
 
-    let unsubscribers: [CedroWebSocketService.Unsubscribe] = [
+    let unsubscribers: [CedroMarketDataService.Unsubscribe] = [
         .aggregatedBook("petr4"),
         .detailedBook("petr4"),
         .businessBook("petr4"),
@@ -34,14 +34,14 @@ func main() {
 
     subscribers.forEach { subscribe in
         queue.async {
-            CedroWebSocket.shared.subscribe(on: subscribe)
+            CedroMarketData.shared.subscribe(on: subscribe)
         }
     }
 
     DispatchQueue.main.asyncAfter(deadline: .now() + 20) {
         unsubscribers.forEach { unsubscribe in
             queue.async {
-                CedroWebSocket.shared.unsubscribe(on: unsubscribe)
+                CedroMarketData.shared.unsubscribe(on: unsubscribe)
             }
         }
     }
