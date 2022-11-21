@@ -35,7 +35,7 @@ public final class CedroWebSocket {
         case let .aggregatedBook(symbol, response): aggregatedBook(symbol, response: response)
         case let .detailedBook(symbol, response): detailedBook(symbol, response: response)
         case let .businessBook(symbol, response, manager): businessBook(symbol, response: response, manager: manager)
-        case let .volumeAtPrice(symbol, response): volumeAtPrice(symbol, response: response)
+        case let .volumeAtPrice(symbol, response, manager): volumeAtPrice(symbol, response: response, manager: manager)
         case let .quote(symbol, response): quote(symbol, response: response)
         case let .candleChart(symbol, period, realTime, quantity, initDate, response, manager): candleChart(symbol, period: period, realTime: realTime, quantity: quantity, initDate: initDate, response: response, manager: manager)
         }
@@ -93,16 +93,16 @@ extension CedroWebSocket {
         }, manager: manager)
     }
     
-    func volumeAtPrice(_ symbol: String, response: ((VolumeAtPriceModel) -> Void)? = nil) {
+    func volumeAtPrice(_ symbol: String, response: ((VolumeAtPriceModel) -> Void)? = nil, manager: ((VolumeAtPriceManager) -> Void)? = nil) {
         volumeAtPriceControllers[symbol.lowercased()] = makeVolumeAtPriceController()
-        volumeAtPriceControllers[symbol.lowercased()]?.subscribe(symbol) { [weak self] result in
+        volumeAtPriceControllers[symbol.lowercased()]?.subscribe(symbol, response: { [weak self] result in
             switch result {
             case.success(let volumeAtPriceModel): response?(volumeAtPriceModel)
             case .failure(_):
                 self?.volumeAtPriceControllers.removeValue(forKey: symbol.lowercased())
                 self?.volumeAtPrice(symbol, response: response)
             }
-        }
+        }, manager: manager)
     }
     
     func quote(_ symbol: String, response: ((_ quote: QuoteModel, _ updatedFields: [QuoteValuesModel.CodingKeys]) -> Void)? = nil) {

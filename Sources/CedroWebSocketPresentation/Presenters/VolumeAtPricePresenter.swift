@@ -9,7 +9,13 @@ public protocol VolumeAtPricePresenterDelegate {
 public final class VolumeAtPricePresenter {
     private let useCase: GetVolumeAtPrice
     private let delegate: VolumeAtPricePresenterDelegate
-    public private(set) var volumeAtPriceResponse: VolumeAtPriceModel?
+    public let manager: VolumeAtPriceManager = .instance
+    private let updateControl = DispatchSemaphore(value: 1)
+    
+    private let managerQueue = DispatchQueue(
+        label: "cedro.websocket.volumeAtPrice.presenter.manager",
+        qos: .unspecified
+    )
     
     public init(useCase: GetVolumeAtPrice, delegate: VolumeAtPricePresenterDelegate) {
         self.useCase = useCase
@@ -21,7 +27,12 @@ public final class VolumeAtPricePresenter {
             guard let self = self else { return }
             switch result {
             case .success(let model):
-                self.volumeAtPriceResponse = model
+                self.manager._response = model
+                self.managerQueue.async { [weak self] in
+                    self?.updateControl.wait()
+                    self?.manager.update(withNewValue: model)
+                    self?.updateControl.signal()
+                }
                 self.delegate.volumeAtPrice(didReceive: model)
             case .failure(let error):
                 self.delegate.volumeAtPrice(didReceive: error)

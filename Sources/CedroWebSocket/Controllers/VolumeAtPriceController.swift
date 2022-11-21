@@ -29,10 +29,13 @@ final class VolumeAtPriceController {
         presenter = nil
     }
     
-    func subscribe(_ symbol: String, response: ((GetVolumeAtPrice.Result) -> Void)? = nil) {
+    func subscribe(_ symbol: String, response: ((GetVolumeAtPrice.Result) -> Void)? = nil, manager: ((VolumeAtPriceManager) -> Void)? = nil) {
         self.response = response
         self.currentSymbol = symbol
         semaphore.wait()
+        presenter?.manager.observer = { [weak self] in
+            if let presenterManager = self?.presenter?.manager { manager?(presenterManager) }
+        }
         presenter?.volumeAtPrice(
             withBody: GetVolumeAtPriceModel(
                 token: tokenWebSocket,

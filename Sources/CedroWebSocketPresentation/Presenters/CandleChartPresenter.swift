@@ -10,7 +10,7 @@ public final class CandleChartPresenter {
     private let useCase: GetCandleChart
     private let delegate: CandleChartPresenterDelegate
     public let manager: CandleChartManager = .instance
-    private let updateControl = DispatchSemaphore(value: 1)
+    private let updateControl = DispatchSemaphore(value: 1)
     
     private let managerQueue = DispatchQueue(
         label: "cedro.websocket.candleChart.presenter.manager",
