@@ -1,34 +1,43 @@
 # Cedro Market Data
 
-> Fornecer sinal de Market Data em que o recurso de cotação é entregue em streaming e em XML/JSON, disponível para os mercados B3 e Moedas.
+> Library to consume CedroTech API in a simple and organized way in real time and RestAPI of market data, authentication and order management system.
 
 [![CI](https://github.com/rafaelesantos/cedro-streaming-websocket/actions/workflows/swift.yml/badge.svg)](https://github.com/rafaelesantos/cedro-streaming-websocket/actions/workflows/swift.yml)
 [![Swift Version][swift-image]][swift-url]
 [![License][license-image]][license-url]
 [![Cedro WebSocket][cedro-image]][cedro-url]
 
-### O que é API WebSocket?
+## Table of Contents
+* [General Information](#general-information)
+* [Technologies Used](#technologies-used)
+* [Features](#features)
+* [Setup](#setup)
+* [Usage](#usage)
 
-Os serviços baseados na API WebSocket dão autorização para que as aplicações recebam os dados em tempo real. Por isso, ele é um serviço indicado para alimentar os serviços web de cotações em tempo real, aplicativos de trading, plataformas de investimentos, serviços de home broker, entre outros.
+## General Information
 
-* Ideal para aplicações WEB (ex.: Home Broker) e aplicativos mobile;
-* Sinal Streaming;
-* Sinal Real-Time ou Delay;
-* Cotações Bovespa, BM&F, Moedas e Indicadores.
+- The objective of this project is to analyze the flow of the market, separating it into moments to apply a strategy, returning when a purchase or sale should be made.
+- All information and development steps are entered in jira boards.
 
-### Funcionalidades
+## Technologies Used
 
-- [X] Livro de Ofertas Agregado - `Aggregated Book`
-- [X] Livro de Ofertas Detalhado - `Detailed Book`
-- [X] Cotação - `Quote`
-- [X] Negócios Realizados Detalhado - `Detailed Business Book`
-- [X] Negócios Realizados Agregado - `Aggregated Business Book`
-- [X] Volume por Preço - `Volume At Price`
-- [X] Gráfico de Candles - `Candle Chart`
+- Xcode - version 14.1
+- Swift Tools - version 5.7
+- Swift Package Manager
 
-### Instalação
+## Features
 
-Adicione esse projeto em seu arquivo `Package.swift`.
+- [X] Aggregated Book
+- [X] Detailed Book
+- [X] Quote
+- [X] Detailed Business Book
+- [X] Aggregated Business Book
+- [X] Volume At Price
+- [X] Candle Chart
+
+## Setup
+
+Add this project to your `Package.swift` file.
 
 ```swift
 import PackageDescription
@@ -45,9 +54,9 @@ let package = Package(
 )
 ```
 
-### Como Utilizar
+## Usage
 
-Para fazer uso da biblioteca é necessário importar o pacote `CedroMarketData`. Em seguida, acesse o singleton do package e faça a chamada da funcionalidade que deseja.
+To make use of the library it is necessary to import the `CedroMarketData` package. Then, access the package's singleton and call the functionality you want.
 
 ```swift
 import CedroMarketData
@@ -97,9 +106,9 @@ class SomeViewController {
 }
 ```
 
-[swift-image]: https://img.shields.io/badge/swift-5.7-orange.svg
+[swift-image]: https://img.shields.io/badge/Swift-5.7-orange.svg
 [swift-url]: https://www.swift.org/blog/swift-5.7-released/
 [license-image]: https://img.shields.io/badge/License-MIT-blue.svg
 [license-url]: LICENSE
-[cedro-image]: https://img.shields.io/badge/WebSocket-Cedro-green.svg
-[cedro-url]: https://www.marketdatacloud.com.br/APIs/websocket/
+[cedro-image]: https://img.shields.io/badge/MarketData-Cedro-green.svg
+[cedro-url]: https://www.marketdatacloud.com.br/
